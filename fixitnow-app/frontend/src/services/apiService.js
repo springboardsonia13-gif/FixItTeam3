@@ -124,6 +124,13 @@ const apiService = {
   getConversations: (userId) => apiClient.get(`/messages/conversations/${userId}`),
   getMessages: (conversationId) => apiClient.get(`/messages/conversation/${conversationId}`),
   sendMessage: (messageData) => apiClient.post('/messages', messageData),
+  
+  // New Chat API endpoints
+  getChatRooms: (userId) => apiClient.get(`/chat/rooms/${userId}`),
+  getRoomMessages: (roomId) => apiClient.get(`/chat/room/${roomId}/messages`),
+  createChatRoom: (data) => apiClient.post('/chat/room', data),
+  markAsRead: (roomId, userId) => apiClient.post(`/chat/room/${roomId}/mark-read`, { userId }),
+  getUnreadCount: (roomId, userId) => apiClient.get(`/chat/room/${roomId}/unread-count/${userId}`),
 
   // Categories
   getCategories: () => apiClient.get('/categories'),

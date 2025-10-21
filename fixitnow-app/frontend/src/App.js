@@ -64,6 +64,14 @@ function App() {
                   } 
                 />
                 <Route 
+                  path="/chat/:userId" 
+                  element={
+                    <ProtectedRoute>
+                      <Chat />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
                   path="/create-service" 
                   element={
                     <ProtectedRoute>

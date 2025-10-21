@@ -66,6 +66,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/api/messages/**").permitAll()  // MOVED TO TOP FOR PRIORITY
                 .requestMatchers("/ws/**").permitAll()
                 // Public access to service browsing (before authentication)
                 .requestMatchers("/services", "/services/**").permitAll()  // Allow public access to view services
