@@ -71,6 +71,7 @@ const apiService = {
   // Authentication
   login: (credentials) => apiClient.post('/auth/signin', credentials),
   register: (userData) => apiClient.post('/auth/signup', userData),
+  adminRegister: (userData) => apiClient.post('/auth/admin-register', userData),
   getCurrentUser: () => apiClient.get('/auth/me'),
   debugCurrentUser: () => apiClient.get('/auth/me'),
 

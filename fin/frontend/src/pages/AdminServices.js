@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import apiService from '../services/apiService';
+import { useAuth } from '../contexts/AuthContext';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
 
 const AdminServices = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, active
@@ -68,6 +72,12 @@ const AdminServices = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    toast.success('Logged out successfully');
+    navigate('/admin');
+  };
+
   const getCategoryBadgeColor = (category) => {
     const colors = {
       'Plumbing': 'bg-blue-100 text-blue-800',
@@ -89,40 +99,66 @@ const AdminServices = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">🔧 Service Management</h1>
-          <p className="text-gray-600 mt-2">Manage and monitor all services on the platform</p>
-        </div>
+    <>
+      <div className="min-h-screen bg-gray-100">
+        {/* Admin Header */}
+        <header className="bg-blue-700 text-white shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold">🔧 Service Management</h1>
+              <p className="text-blue-100">Manage and monitor all services on the platform</p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => navigate('/admin/dashboard')}
+                className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-white font-semibold"
+              >
+                ← Dashboard
+              </button>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-white font-semibold"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
 
-        {/* Filter Tabs */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {['all', 'active', 'inactive'].map(status => (
-            <button
-              key={status}
-              onClick={() => setFilter(status)}
-              className={`px-4 py-2 rounded-lg font-medium capitalize transition-all ${
-                filter === status
-                  ? 'bg-primary text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:border-primary'
-              }`}
-            >
-              {status === 'all' ? 'All Services' : status === 'active' ? 'Active' : 'Inactive'}
-              <span className="ml-2 text-sm">
-                ({status === 'all' 
-                  ? services.length 
-                  : status === 'active' 
-                  ? services.filter(s => s.isActive).length 
-                  : services.filter(s => !s.isActive).length})
-              </span>
-            </button>
-          ))}
-        </div>
+        {/* Main Content */}
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Services Overview</h2>
+            <p className="text-gray-600 mt-2">Manage and monitor all services on the platform</p>
+          </div>
 
-        {/* Services Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+          {/* Filter Tabs */}
+          <div className="flex gap-2 mb-6 flex-wrap">
+            {['all', 'active', 'inactive'].map(status => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-4 py-2 rounded-lg font-medium capitalize transition-all whitespace-nowrap min-w-max ${
+                  filter === status
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {status === 'all' ? 'All Services' : status === 'active' ? 'Active' : 'Inactive'}
+                <span className="ml-2 text-sm">
+                  ({status === 'all' 
+                    ? services.length 
+                    : status === 'active' 
+                    ? services.filter(s => s.isActive).length 
+                    : services.filter(s => !s.isActive).length})
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* Services Table */}
+          <div className="bg-white rounded-lg shadow overflow-hidden">
           {filteredServices.length === 0 ? (
             <div className="p-8 text-center">
               <p className="text-gray-500">No services found</p>
@@ -211,18 +247,19 @@ const AdminServices = () => {
             </p>
           </div>
         </div>
-      </div>
-
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
-        isOpen={deleteModal.isOpen}
-        type="service"
-        itemName={deleteModal.service?.title}
-        onConfirm={handleConfirmDelete}
-        onCancel={closeDeleteModal}
-        isLoading={deleting}
-      />
+      </main>
     </div>
+
+    {/* Delete Confirmation Modal */}
+    <DeleteConfirmationModal
+      isOpen={deleteModal.isOpen}
+      type="service"
+      itemName={deleteModal.service?.title}
+      onConfirm={handleConfirmDelete}
+      onCancel={closeDeleteModal}
+      isLoading={deleting}
+    />
+    </>
   );
 };
 

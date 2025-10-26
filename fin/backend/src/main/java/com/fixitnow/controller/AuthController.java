@@ -136,6 +136,45 @@ public class AuthController {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @PostMapping("/admin-register")
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupRequest signUpRequest) {
+        Map<String, String> response = new HashMap<>();
+        
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            response.put("message", "Error: Email is already taken!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            // Create new admin account
+            User admin = new User(signUpRequest.getName(),
+                                signUpRequest.getEmail(),
+                                encoder.encode(signUpRequest.getPassword()),
+                                User.Role.ADMIN);
+
+            admin.setLocation(signUpRequest.getLocation());
+            admin.setPhone(signUpRequest.getPhone());
+            // Admins are verified by default
+            admin.setIsVerified(true);
+
+            userRepository.save(admin);
+
+            System.out.println("DEBUG: Admin registered successfully - Email: " + admin.getEmail() + ", ID: " + admin.getId());
+
+            response.put("message", "Admin registered successfully!");
+            response.put("userId", admin.getId().toString());
+            response.put("email", admin.getEmail());
+            response.put("role", "ADMIN");
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            System.out.println("ERROR: Admin registration failed - " + e.getMessage());
+            e.printStackTrace();
+            response.put("message", "Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         try {

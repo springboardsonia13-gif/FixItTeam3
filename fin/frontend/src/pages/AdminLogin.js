@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -86,8 +86,17 @@ const AdminLogin = () => {
           </p>
         </div>
 
-        <div className="mt-4 text-center">
-          <a href="/" className="text-blue-600 hover:text-blue-800 text-sm">
+        <div className="mt-4 text-center space-y-3">
+          <div>
+            <p className="text-sm text-gray-600 mb-2">Don't have an admin account?</p>
+            <Link
+              to="/admin-register"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+            >
+              Create Admin Account
+            </Link>
+          </div>
+          <a href="/" className="block text-blue-600 hover:text-blue-800 text-sm">
             ← Back to Home
           </a>
         </div>

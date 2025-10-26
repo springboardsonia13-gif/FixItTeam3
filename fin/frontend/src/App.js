@@ -24,6 +24,7 @@ import CreateReview from './pages/CreateReview';
 import AdminProviders from './pages/AdminProviders';
 import AdminDisputes from './pages/AdminDisputes';
 import AdminLogin from './pages/AdminLogin';
+import AdminRegister from './pages/AdminRegister';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminServices from './pages/AdminServices';
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/admin-register" element={<AdminRegister />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/services-map" element={<ServicesWithMap />} />
                 <Route path="/services/:id" element={<ServiceDetail />} />
