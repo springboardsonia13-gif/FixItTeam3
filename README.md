@@ -1,6 +1,7 @@
 # FixItNow - Neighborhood Service & Repair Marketplace
 
-A full-stack web application connecting residents with local service providers like electricians, plumbers, carpenters, and more. Built with **Spring Boot 3 + React 18**, featuring real-time messaging, location-based search, and comprehensive admin tools.
+A full-stack web application connecting residents with local service providers like electricians, plumbers, carpenters, and more. Built with **Spring Boot 3 + React 18**, featuring real-time messaging, location-based search, and comprehensive admin tools. [View Project](https://fixitnow-frontend-m629.onrender.com/)
+
 
 ## 🎯 Project Overview
 
